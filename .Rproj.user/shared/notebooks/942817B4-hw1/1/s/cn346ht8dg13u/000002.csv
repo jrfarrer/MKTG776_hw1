@@ -1,8 +1,0 @@
-"0","results %>% "
-"0","  filter(customer_type == ""High End"") %>% "
-"0","  spread(calibration, number_alive) %>%"
-"0","  mutate("
-"0","    `7-period % Error` = paste0(formatC(abs((Actual - `7-period`) / Actual) * 100, digits = 2, format = ""f""),'%')"
-"0","    , `10-period % Error` = paste0(formatC(abs((Actual - `10-period`) / Actual) * 100, digits = 2, format = ""f""),'%')"
-"0","  ) %>%"
-"0","  select(Year = year, `7-period % Error`, `10-period % Error`)"
