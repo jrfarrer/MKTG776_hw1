@@ -445,3 +445,6 @@ expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5)) %>%
        title = "Estimated Distributions of Churn Probabilities")
 ```
 
+### References
+
+Derivation from ["How to Project Customer Retention"](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.558.935&rep=rep1&type=pdf)
