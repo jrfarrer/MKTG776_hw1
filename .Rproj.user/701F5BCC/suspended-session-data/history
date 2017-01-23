@@ -1,0 +1,512 @@
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibration)) +
+geom_density() +
+facet_grid(.~ customer_type)
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibration)) +
+geom_density() +
+facet_grid(calibration ~ customer_type)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibration)) +
+geom_density() +
+facet_grid(calibration ~ customer_type)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibratio, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type)
+estimation %>%
+unnest() %>%
+ggplot(aes(density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none')
+estimation
+library(jrfTools)
+fn_plot_cv_glmnet
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = density, label = expression(alpha)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = density, label = paste0("alpha = ", alpha)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = paste0("alpha = ", alpha)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = paste0("alpha = ", round(alpha), 2)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = paste0("alpha = ", round(alpha, 2))))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", round(alpha, 2),'\nbeta = ', round(beta,2))))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid(calibration ~ customer_type) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'))))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'))))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f')))) +
+labs(x = expression(theta), y = "Density")
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f')))) +
+labs(x = expression(theta), y = "Density")
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f')))) +
+labs(x = expression(theta), y = "Density")
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(100000, .x, .y)})
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f')))) +
+labs(x = expression(theta), y = "Density")
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f')))) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'),
+'\nE(theta)', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'),
+'\nE(theta)', formatC(alpha / (alpha + beta), digits = 2, format = 'f')))) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = expression(paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'),
+'\nE(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))))) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4,
+label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'),
+'\nE(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))), parse = T) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta = ', formatC(beta, digits = 2, format = 'f'),
+'\nE(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+' beta = ', formatC(beta, digits = 2, format = 'f'),
+' E(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'),
+'~beta = ', formatC(beta, digits = 2, format = 'f'),
+'~E(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("alpha = ", formatC(alpha, digits = 2, format = 'f'))
+#'~beta = ', formatC(beta, digits = 2, format = 'f'),
+#'~E(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("alpha == ", formatC(alpha, digits = 2, format = 'f'))
+#'~beta = ', formatC(beta, digits = 2, format = 'f'),
+#'~E(theta) = ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("alpha == ", formatC(alpha, digits = 2, format = 'f'),
+'\nbeta == ', formatC(beta, digits = 2, format = 'f'),
+'\nE(theta) == ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(label = paste0("atop(alpha == ", formatC(alpha, digits = 2, format = 'f'),
+',beta == ', formatC(beta, digits = 2, format = 'f'),
+',E(theta) == ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'),")")
+)
+estimation
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(
+label1 = paste0("atop(alpha == ", formatC(alpha, digits = 2, format = 'f'),
+',beta == ', formatC(beta, digits = 2, format = 'f'),')'),
+label2 = paste0('E(theta) == ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label1), parse = TRUE) +
+geom_text(data = estimation, aes(x = .75, y = 3.5, label = label2), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+estimation <-
+param_history %>%
+mutate(
+density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+) %>%
+mutate(
+label1 = paste0("atop(alpha == ", formatC(alpha, digits = 2, format = 'f'),
+',beta == ', formatC(beta, digits = 2, format = 'f'),')')
+, label2 = paste0('E(theta) == ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+)
+estimation %>%
+unnest() %>%
+ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+geom_density(alpha = 1/3) +
+facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+theme(legend.position = 'none') +
+geom_text(data = estimation, aes(x = .75, y = 4, label = label1), parse = TRUE) +
+geom_text(data = estimation, aes(x = .75, y = 3, label = label2), parse = TRUE) +
+labs(x = expression(theta), y = expression(f(theta)))
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12)
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(retention_rate = fn_retention(alpha, beta, t))
+fn_retention <- function(alpha, beta, t) {
+return((beta + t - 1) / (alpha + beta + t - 1))
+}
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(retention_rate = fn_retention(alpha, beta, t))
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(retention_rate = fn_retention(alpha, beta, t))
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, " beta == ", beta)
+) %>%
+ggplot(aes(x = t, y = retention_rate)) +
+geom_line() +
+facet_wrap(~alpha_beta)
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, " beta == ", beta)
+) %>%
+ggplot(aes(x = t, y = retention_rate)) +
+geom_line() +
+facet_wrap(~alpha_beta, labeller= label_parsed)
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+) %>%
+ggplot(aes(x = t, y = retention_rate)) +
+geom_line() +
+facet_wrap(~alpha_beta, labeller= label_parsed)
+library(forcats)
+fct_reorder2()
+?fct_reorder2
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_reorder2(alpha, beta)
+)
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_reorder2(alpha_beta, alpha, beta)
+)
+a <- expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_reorder2(alpha_beta, alpha, beta)
+)
+a$alpha_beta
+a <- expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_reorder2(alpha_beta, beta, alpha)
+)
+a$alpha_beta
+?last2
+forcats::last2
+a <- expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_reorder2(alpha_beta, beta, alpha, .desc = FALSE)
+)
+a$alpha_beta
+a <- expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_reorder2(alpha_beta, beta, alpha, .desc = T)
+)
+a$alpha_beta
+?fct_recode
+?fct_relevel
+?fct_inorder
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+arrange(desc(beta), alpha) %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_inorder(alpha_beta)
+)
+a <- expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+arrange(desc(beta), alpha) %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_inorder(alpha_beta)
+)
+levels(a$alpha_beta)
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+arrange(desc(beta), alpha) %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_inorder(alpha_beta)
+) %>%
+ggplot(aes(x = t, y = retention_rate)) +
+geom_line() +
+facet_wrap(~alpha_beta, labeller= label_parsed)
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+as_tibble() %>%
+arrange(desc(beta), alpha) %>%
+mutate(
+retention_rate = fn_retention(alpha, beta, t)
+, alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+, alpha_beta = fct_inorder(alpha_beta)
+) %>%
+ggplot(aes(x = t, y = retention_rate)) +
+geom_line() +
+facet_wrap(~alpha_beta, labeller= label_parsed) +
+scale_x_continuous(breaks = scales::pretty_breaks()) +
+labs(x = "Period", y = "Retention Rate", title = "Retention Rates for Different Parameters")

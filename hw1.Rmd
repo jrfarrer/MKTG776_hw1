@@ -1,0 +1,447 @@
+---
+title: "MKTG776 HW1"
+author: "Jordan Farrer"
+date: '2017-01-23'
+output: function(...) {
+
+          fmt <- rmarkdown::pdf_document(toc = TRUE, number_section = TRUE, df_print = 'kable',...)
+        
+          fmt$knitr$knit_hooks$size = function(before, options, envir) {
+            if (before) return(paste0("\n \\", options$size, "\n\n"))
+            else return("\n\n \\normalsize \n")
+          }
+        
+          return(fmt)
+        }
+
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = 'center', size = 'small')
+```
+
+# Question 1
+
+## PMF of Unshifted Beta-Geometric
+
+To derive the unshifted beta-geometric expression for $P(T = t)$, we begin with the statement that since $\Theta$ is unobserved, $P(T = t)$ for a randomly chosen individual is the expected value of the unshifted geometric distribution probability of dropping in period $t$, conditional on $\Theta = \theta$. However, we weight each $P(T=t|\Theta = \theta)$ by the probability of $\Theta$ occurring via the beta distribution. 
+
+The pmf of the unshifted geometric distribution is defined as 
+
+\begin{equation} \label{pdf_geom}
+\ P(T=t|\theta) = \theta (1-\theta)^{t}, \; t = 0,1,2,...
+\end{equation}
+
+Thus,
+
+\begin{align}
+\ P(T=t|\alpha,\beta) & = \int_{0}^{1} P(T=t|\Theta=\theta)f(\theta|\alpha,\beta)d\theta \\
+ & = \int_{0}^{1} \theta(1-\theta)^t\frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta)}d\theta \\ 
+ & = \frac{1}{B(\alpha,\beta)} \int_{0}^{1} \theta^{\alpha}(1-\theta)^{\beta + t -1} d\theta 
+\end{align}
+
+We note that the integral above is similar to the integral expression of the beta function
+
+\begin{equation}
+\ B(\alpha, \beta) = \int_{0}^{1}\theta^{\alpha -1}(1-\theta)^{\beta -1} d\theta,\; \alpha,\beta > 0
+\end{equation}
+
+with parameters $\alpha + 1$ and $\beta + t$. Therefore,
+
+\begin{equation}
+\ P(T=t|\alpha,\beta) = \frac{B(\alpha+1,\beta+t)}{B(\alpha,\beta)} \; t = 0,1,3, ...
+\end{equation}
+
+## Survival Function of Unshifted Beta-Geometric
+
+For the survival function, $S(t)$, we perform similar steps. However, we need to first determine the survival function of an unshifted geometric distribution. Using (\ref {pdf_geom}) and the fact that the sum of an infinite geometric series is equal to $\frac{a}{1-r}$, by 
+
+\begin{equation}
+\ a + ar + ar^2 + ar^3 + \dotsb = \frac{a}{1-r}
+\end{equation}
+
+we find
+
+\begin{align}
+\ P(T > t) = P(T \geq t + 1) = \sum_{x=t+1}^{\infty} \theta(1-\theta)^{x} & = \theta[(1-\theta)^{t+1} + (1-\theta)^{t+2} + \dotsb ] \\
+ & = \theta[\frac{(1-\theta)^{t+1}}{1-(1-\theta)}] \\
+ & = \theta\frac{(1-\theta)^{t+1}}{\theta} \\
+ & = (1-\theta)^{t+1}
+\end{align}
+
+Thus, 
+
+\begin{align} 
+\ S(t) = P(T>t|\alpha,\beta) & = \int_{0}^{1} P(T>t|\Theta=\theta)f(\theta|\alpha,\beta)d\theta \\
+ & = \int_{0}^{1} (1-\theta)^{t+1}\frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta)}d\theta \\
+ & = \frac{1}{B(\alpha,\beta)} \int_{0}^{1} \theta^{\alpha -1}(1-\theta)^{\beta + t} d\theta \label{survival_integral}
+\end{align}
+
+Like in the derivation of $P(T=t|\alpha,\beta)$, we note that the integral above (\ref{survival_integral}) is the beta function with parameters $\alpha$ and $\beta + t + 1$. Therefore, 
+
+\begin{equation} \label{survival}
+\ S(t) = P(T>t|\alpha,\beta) = \frac{B(\alpha, \beta + t + 1)}{B(\alpha, \beta)},\; t = 0,1,3, ...
+\end{equation}
+
+## Forward-Recursion Algorithm for $P(T=t)$
+
+To derive the forward-recursion algorithm needed to compute unshifted beta-geometric probabilities, we first note that 
+
+\begin{equation} \label{beta_geom_1}
+\ P(T=0|\alpha,\beta) = \frac{B(\alpha+1,\beta)}{B(\alpha,\beta)}
+\end {equation}
+
+We know that the beta function can be expressed in terms of gamma functions:
+
+\begin{equation} \label{beta_as_gamma}
+\ B(\alpha,\beta) = \frac{\Gamma(\alpha),\Gamma(\beta)}{\Gamma(\alpha + \beta)}
+\end{equation}
+
+Thus, we can rewrite (\ref{beta_geom_1}) as 
+
+\begin{align} 
+\ & = \frac{\frac{\Gamma(\alpha+1)\Gamma(\beta)}{\Gamma(\alpha+\beta+1)}}{\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}}
+\end{align}
+
+and simplify
+
+\begin{align} \label{beta_geom_2} 
+\ & = \frac{\Gamma(\alpha+1)\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\alpha+\beta+1)}
+\end{align}
+
+We recall the recursive nature of the gamma function, i.e.
+
+\begin{equation}
+\ \frac{\Gamma(x+1)}{\Gamma(x)} = x
+\end{equation}
+
+So, we can rewrite (\ref{beta_geom_2}) as
+
+\begin{align}
+\ & = \frac{\alpha\Gamma(\alpha)\Gamma(\alpha+\beta)}{\Gamma(\alpha)(\alpha+\beta)\Gamma(\alpha+\beta)} \\
+ & = \frac{\alpha}{\alpha+\beta}
+\end{align}
+
+This is the same formula as $P(T=1)$ for the shifted beta-geometric distribution. However, the ratio of $\frac{P(T=t)}{P(T=t-1)}$ will be different. We seek to find this ratio because of the identity
+
+\begin{equation}
+\ P(T=t) = \frac{P(T=t)}{P(T=t-1)}P(T=t-1)
+\end{equation}
+
+As we can find the value of $P(T=0)$, we can find each subsequent value of $P(T=t)$ by using the previous. We express this ratio first as beta and then as gamma functions:
+
+\begin{align} 
+\ \frac{P(T=t)}{P(T=t-1)} & = \frac{\frac{B(\alpha+1,\beta+t)}{B(\alpha,\beta)}}{\frac{B(\alpha+1,\beta+t-1)}{B(\alpha,\beta)}} \\
+ & = \frac{B(\alpha+1,\beta+t)}{B(\alpha+1,\beta+t-1)} \\
+ & = \frac{\frac{\Gamma(\alpha+1)\Gamma(\beta+t)}{\Gamma(\alpha+\beta+t+1)}}{\frac{\Gamma(\alpha+1)\Gamma(\beta+t-1)}{\Gamma(\alpha+\beta+t)}} \\
+ & = \frac{\Gamma(\beta+t)\Gamma(\alpha+\beta+t)}{\Gamma(\alpha+\beta+t+1)\Gamma(\beta+t+1)} \\
+ & = \frac{(\beta+t-1)\Gamma(\beta+t-1)\Gamma(\alpha+\beta+t)}{(\alpha+\beta+t)\Gamma(\alpha+\beta+t)\Gamma(\beta+t-1)} \\
+ & = \frac{\beta+t-1}{\alpha+\beta+t}
+\end{align}
+
+Thus,
+
+\begin{equation}
+P(T=t) = 
+\begin{cases}
+\frac{\alpha}{\alpha+\beta} & t = 0\\
+\frac{\beta+t-1}{\alpha+\beta+t}P(T=t-1) & t = 1,2,3,...\\
+\end{cases}
+\end{equation}
+
+## Forward-Recursion Algorithm for $r_t$
+
+We can derive an expression for the retention rate in period $t$ implied by the sBG model by substituting the expression for the sBG survivor function (\ref{survival}) into the definition:
+
+\begin{equation}
+\ r_t = \frac{S(t)}{S(t-1)}
+\end{equation}
+
+So,
+
+\begin{align} 
+\ r_t = \frac{S(t)}{S(t-1)} & = \frac{\frac{B(\alpha,\beta+t+1)}{B(\alpha,\beta)}}{\frac{B(\alpha,\beta+t)}{B(\alpha,\beta)}} \\
+ & = \frac{B(\alpha,\beta+t+1)}{B(\alpha,\beta+t)} \\
+ & = \frac{\frac{\Gamma(\alpha)\Gamma(\beta+t+1)}{\Gamma(\alpha+\beta+t+1)}}{\frac{\Gamma(\alpha)\Gamma(\beta+t)}{\Gamma(\alpha+\beta+t)}} \\
+ & = \frac{\Gamma(\beta+t+1)\Gamma(\alpha+\beta+t)}{\Gamma(\alpha+\beta+t+1)\Gamma(\beta+t)} \\
+ & = \frac{(\beta+t)\Gamma(\beta+t)\Gamma(\alpha+\beta+t)}{(\alpha+\beta+t)\Gamma(\alpha+\beta+t)\Gamma(\beta+t)} \\
+ & = \frac{\beta+t}{\alpha+\beta+t}
+\end{align}
+
+# Question 2
+
+We first load the provided customer data.
+
+```{r}
+pacman::p_load(tidyverse, forcats, pander)
+panderOptions('round', 2)
+panderOptions('keep.trailing.zeros', TRUE)
+
+customer_data <- 
+  readxl::read_excel("Homework data.xlsx", 
+                     col_names = c("Year","Regular","High End","Empty"), skip = 1) %>%
+  select(1:3) %>%
+  filter(row_number() <= 13)
+
+customer_data
+```
+
+Next we define functions that implement the shifted beta-geometric (sBG) algorithm.
+
+```{r}
+# Calculates P(T=t) using recursion
+fn_p_t <- function(alpha, beta, t) {
+  if (t == 1) {
+    p_t <- alpha / (alpha + beta)
+    return(p_t)
+  } else {
+    p_t <- (beta + t - 2) / (alpha + beta + t - 1) * fn_p_t(alpha, beta, t -1) # Recursive
+    return(p_t)
+  }
+}
+
+# Calculates the log-likelihood of initial alpha and beta
+# given data (in this case the percent customers alive from t = 1)
+fn_max_ll <- function(par, percent_alive) {
+  alpha <- par[1]
+  beta <- par[2]
+  len_alive <- length(percent_alive)
+  
+  percent_dead <- abs(diff(c(1, percent_alive)))
+  p_t <- sapply(1:len_alive, function(x) {fn_p_t(alpha, beta, x)})
+  s_t <- 1 - sum(p_t)
+  
+  ll <- sum((percent_dead * log(p_t)))  + percent_alive[length(percent_alive)] * log(s_t)
+  
+  return(-ll)
+}
+
+# Using calculated alpha and beta, predict the customers
+# alive in each period
+fn_sGB_predict <- function(alpha, beta, last_period) {
+  p_t <- sapply(1:last_period, function(x) {fn_p_t(alpha, beta, x)})
+  pred_surival <- 1 - cumsum(p_t)
+  return(pred_surival)
+}
+```
+
+The for both Regular and High End customer types and both 7- and 10-period calibrations, we run the sBG model and put the results in a table.
+
+```{r}
+results <-
+  customer_data %>% 
+  gather(customer_type, number_alive, -Year) %>%
+  rename(year = Year) %>%
+  mutate(calibration = 'Actual') %>%
+  select(customer_type, calibration, year, number_alive)
+
+param_history <- data_frame()
+
+for(customer_type in c('Regular','High End')) {
+  for(calibration in c(7, 10)) {
+    
+    mutate_call <- lazyeval::interp(~ a /1000, a = as.name(customer_type))
+    
+    percent_alive <- 
+      (customer_data %>% 
+         mutate_(.dots = setNames(list(mutate_call), "percent_alive")) %>% 
+         filter(Year >= 1 & Year <= calibration))$percent_alive
+    
+    params <- optim(par = c(1,1), fn_max_ll, gr = NULL, percent_alive)
+    predicted <- fn_sGB_predict(alpha = params$par[1], beta = params$par[2], last_period = 12)
+    
+    param_history <- 
+      param_history %>%
+      bind_rows(
+        data_frame(
+           customer_type = customer_type
+              , calibration = paste0(calibration,"-period")
+              , alpha = params$par[1]
+              , beta = params$par[2]
+        )
+      )
+      
+    results <-
+      results %>%
+      bind_rows(
+        data_frame(
+              customer_type = customer_type
+              , calibration = paste0(calibration,"-period")
+              , year = 0
+              , number_alive = 1000
+            )
+      ) %>%
+      bind_rows(
+            data_frame(
+              customer_type = customer_type
+              , calibration = paste0(calibration,"-period")
+              , year = 1:12
+              , number_alive = predicted * 1000
+            )
+      )
+  }
+}
+```
+
+Next, we review the results for regular and then High End customers.
+
+```{r}
+results %>% 
+  filter(customer_type == "Regular") %>% 
+  spread(calibration, number_alive) %>%
+  select(Year = year, Actual, `7-period`, `10-period`) %>%
+  pander(caption = "Regular Customers", justify = c('center', rep('right',3)))
+```
+
+```{r}
+results %>% 
+  filter(customer_type == "High End") %>% 
+  spread(calibration, number_alive) %>%
+  select(Year = year, Actual, `7-period`, `10-period`) %>%
+  pander(caption = "High End Customers", justify = c('center', rep('right',3)))
+```
+
+Let's also look at a plot the estimates and the actuals.
+
+```{r}
+results %>%
+  ggplot(aes(x = year, y = number_alive, 
+             colour = fct_rev(calibration), linetype = fct_rev(calibration))) +
+  geom_line() +
+  facet_grid(. ~ forcats::fct_rev(customer_type)) +
+  scale_x_continuous(breaks = scales::pretty_breaks()) +
+  labs(title = 'Shifted Beta-Geometric Model', y = 'Number of Customers Alive', x = 'Year') +
+  theme(legend.position = "top", legend.title = element_blank())
+```
+
+The lines are extremely close together, so let's look at the percent error to get a better idea. First the Regular Customers:
+
+```{r}
+results %>% 
+  filter(customer_type == "Regular") %>% 
+  spread(calibration, number_alive) %>%
+  mutate(
+    `7-period % Error` = paste0(formatC(abs((Actual - `7-period`) / Actual) * 100, 
+                                        digits = 2, format = "f"),'%')
+    , `10-period % Error` = paste0(formatC(abs((Actual - `10-period`) / Actual) * 100, 
+                                        digits = 2, format = "f"),'%')
+  ) %>%
+  select(Year = year, `7-period % Error`, `10-period % Error`) %>%
+  pander(align = c('center','right','right'), 
+         caption = "Regular Customers % Error Between Actual and Estimate")
+```
+
+Then, the High End customers:
+
+```{r}
+results %>% 
+  filter(customer_type == "High End") %>% 
+  spread(calibration, number_alive) %>%
+  mutate(
+    `7-period % Error` = paste0(formatC(abs((Actual - `7-period`) / Actual) * 100, 
+                                        digits = 2, format = "f"),'%')
+    , `10-period % Error` = paste0(formatC(abs((Actual - `10-period`) / Actual) * 100, 
+                                        digits = 2, format = "f"),'%')
+  ) %>%
+  select(Year = year, `7-period % Error`, `10-period % Error`) %>%
+  pander(align = c('center','right','right'), 
+        caption = "High End Customers % Error Between Actual and Estimate")
+```
+
+We find that for both calibrations, the estimate for the Regular customers is better (lower MAPE) than the estimate for High End Customers. For both customer types, the 7-period calibration performs worse in later periods than the 10-period calibration. This is expected because the 10-period calibration only needed to estimate two periods in the future whereas the 7-period needed to estimate five periods in the future. Interestingly, both both Regular and High End customers, the 7-period calibration performs better than the 10-period calibration in periods 3 and 4.
+
+Let's also look at the different parameters of the sBG model:
+
+```{r}
+param_history %>%
+  pander(caption = "sBG Parameters")
+```
+
+Recognizing that alpha and beta are parameters for the beta distribution which weights the geometric distribution, we can look at the distribution of the unobserved parameter $\theta$. $\theta$ is the probability a customer will leave in period $t$. By sampling from the beta distribution for the 4 sets of parameters alpha and beta, we can show the estimated distributions of the churn probabilities. There is high density of low theta's for the High End customers as their propensity to churn is lower than Regular customers. While the shape of the Regular customers' distribution is similar to the High End - they are both J-shaped as for all four estimates have alpha < 1 and beta > 1 - there are more customers with a higher propensity to churn among Regular customers.
+
+```{r}
+estimation <-
+  param_history %>%
+  mutate(
+    density = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+  ) %>%
+  mutate(
+    label1 = paste0("atop(alpha == ", formatC(alpha, digits = 2, format = 'f'), 
+                     ',beta == ', formatC(beta, digits = 2, format = 'f'),')')
+    , label2 = paste0('E(theta) == ', formatC(alpha / (alpha + beta), digits = 2, format = 'f'))
+  )
+
+estimation %>%
+  unnest() %>%
+  ggplot(aes(x = density, colour = calibration, fill = calibration)) +
+  geom_density(alpha = 1/3) +
+  facet_grid( forcats::fct_rev(calibration) ~ forcats::fct_rev(customer_type)) +
+  theme(legend.position = 'none') +
+  geom_text(data = estimation, aes(x = .75, y = 4, label = label1), parse = TRUE) +
+  geom_text(data = estimation, aes(x = .75, y = 3, label = label2), parse = TRUE) +
+  labs(x = expression(theta), y = expression(f(theta)))
+```
+
+# Question 3
+
+The fact that $P(T=1)$ for the sBG equals the mean of the sBG is not surprising because the shifted geometric when $t=1$ is just $\theta$. Thus, $P(T=1)$ is simply $\theta$ times the beta distribution, which by definition is the expectation.
+
+Let $X \sim Beta(\alpha,\beta)$, then
+
+\begin{align}
+\ E[X] = \int_{-\infty}^{\infty}xf(x)dx & = \int_{0}^{1}\theta \frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta}d\theta \\
+ & = P(T=1|\alpha,\beta) = \int_{0}^{1}\theta(1-\theta)^{1-1} \frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta}d\theta \\
+ & = \int_{0}^{1}\theta \frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta}d\theta 
+\end{align}
+
+# Question 4
+
+The implied shape of the retention curve under the beta-geometric is an increasing function of the length of a customer's relationship with the firm. The increasing retention rates in later periods is *not* a result of customers becoming "more loyal" (an common explanation), but rather is a result of a sorting effect in the heterogeneous population (customers with high-churn probabilities drop out earlier and the remaining customers have lower churn rates).
+
+The figure below shows how the retention rate curve changes with different model parameters:
+
+```{r}
+fn_retention <- function(alpha, beta, t) {
+  return((beta + t - 1) / (alpha + beta + t - 1))
+}
+
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5), t = 1:12) %>%
+  as_tibble() %>%
+  arrange(desc(beta), alpha) %>%
+  mutate(
+    retention_rate = fn_retention(alpha, beta, t)
+    , alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+    , alpha_beta = fct_inorder(alpha_beta)
+  ) %>%
+  ggplot(aes(x = t, y = retention_rate)) +
+  geom_line() +
+  facet_wrap(~alpha_beta, labeller= label_parsed) +
+  scale_x_continuous(breaks = scales::pretty_breaks()) +
+  labs(x = "Period", y = "Retention Rate", title = "Retention Rates for Different Parameters") +
+  scale_y_continuous(labels = scales::percent)
+```
+
+We see that an optimal place for the firm is in the upper left-hand corner where alpha is less than 1 and beta is greater than 1. Under these parameters, retention is higher in earlier periods. A sub-optimal place for the firm is the lower right-hand corner where alpha is greater than 1 and beta is less than 1. Under these parameters, a large percentage of the customers leave in initial periods. However, for all four values of alpha and beta, the retention rates reaches an asymptote between 88% and 96% in period 12.
+
+The differences are explained by the heterogeneity of the customers: a beta distribution with alpha less than 1 and beta greater than 1 has more customers with lower churn probabilities, $\theta$, and a beta distribution with alpha greater than 1 and beta less than 1 has more customers with higher churn probabilities. This relationship is shown in the figure below where each correspond to one of the four retention rate plots above.
+
+```{r}
+expand.grid(alpha = c(.5, 1.5), beta = c(.5, 1.5)) %>%
+  as_tibble() %>%
+  arrange(desc(beta), alpha) %>%
+  mutate(
+    theta = map2(alpha, beta, function(.x, .y) {rbeta(10000, .x, .y)})
+  ) %>%
+  mutate(
+      alpha_beta = paste0("alpha == ", alpha, "~~ beta == ", beta)
+    , alpha_beta = fct_inorder(alpha_beta)
+  ) %>%
+  unnest() %>%
+  ggplot(aes(x = theta)) +
+  geom_line(stat = "density") +
+  facet_wrap(~alpha_beta, labeller= label_parsed) +
+  scale_x_continuous(breaks = scales::pretty_breaks()) +
+  labs(x = expression(theta), y = expression(f(theta)), 
+       title = "Estimated Distributions of Churn Probabilities")
+```
+
